@@ -22,6 +22,9 @@ function loadCards(data,filtro=0,inicio=0){
 
     document.querySelector("body > .load_container").classList.add('hidding');
 
+    document.querySelector("body > .container > .card_container").classList.remove('hidding_animation');
+    document.querySelector("body > .container > .buttons").classList.remove('hidding_animation');
+
 }
 
 
@@ -36,6 +39,10 @@ async function loadPage(){
 }
 
 async function nextPage(offset,button){
+    document.querySelector("body > .container > .card_container").classList.add('hidding_animation');
+    document.querySelector("body > .container > .buttons").classList.add('hidding_animation');
+
+    
     atual_page = button;
     let data = await fetch("https://api.sheety.co/30b6e400-9023-4a15-8e6c-16aa4e3b1e72");
     loadCards(await data.json(),filter+offset,index+offset);

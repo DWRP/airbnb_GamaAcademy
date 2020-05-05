@@ -1,8 +1,10 @@
 .card_container{
+    animation: att 1s ease-in-out;
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    transition: 1s;
 }
 
 .card_contant{
@@ -20,4 +22,18 @@
 }
 .card_contant .card_title{
     max-width: 270px;
+}
+
+.hidding_animation{
+    visibility: hidden !important;
+    display: none;
+}
+
+@keyframes att{
+    from{
+        transform: translateX(-500px);
+    }
+    to{
+        transform: translateX(0px);
+    }
 }
