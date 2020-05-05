@@ -22,7 +22,10 @@ function loadCards(data,filtro=0,inicio=0){
 
     document.querySelector("body > .load_container").classList.add('hidding');
 
+    document.querySelector("body > .container > .load_container").classList.add('hidding');
+
     document.querySelector("body > .container > .card_container").classList.remove('hidding_animation');
+
     document.querySelector("body > .container > .buttons").classList.remove('hidding_animation');
 
 }
@@ -41,6 +44,7 @@ async function loadPage(){
 async function nextPage(offset,button){
     document.querySelector("body > .container > .card_container").classList.add('hidding_animation');
     document.querySelector("body > .container > .buttons").classList.add('hidding_animation');
+    document.querySelector("body > .container > .load_container").classList.remove('hidding');
 
     
     atual_page = button;

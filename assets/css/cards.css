@@ -1,4 +1,7 @@
 .card_container{
+    
+    max-width: 1366px;
+
     animation: att 1s ease-in-out;
     width: 100%;
     display: flex;

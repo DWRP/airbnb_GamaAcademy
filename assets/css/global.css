@@ -7,12 +7,15 @@
 
 html,body{
     font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, sans-serif;
+    
     width: 100%;
     height: 100%;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
 }
 
 html::-webkit-scrollbar {
@@ -78,14 +81,21 @@ button,input{
     align-items: center;
     font-weight: bold;
 }
+
 .loading{
-    margin-top: 15px;
     animation: loaded 1.2s infinite;
+    margin-top: 15px;
     border: 6px solid grey;
     border-top-color: lightseagreen;
     border-radius: 50%;
     height: 50px;
     width: 50px;
+}
+
+.reload {
+    margin-top: 0;
+    align-items:initial;
+    justify-content: initial;
 }
 
 @keyframes loaded {
