@@ -35,6 +35,7 @@ async function loadPage(){
     let data = await fetch("https://api.sheety.co/30b6e400-9023-4a15-8e6c-16aa4e3b1e72");
     loadCards(await data.json(),filter,index);
     let pages = document.querySelectorAll("body > .container > .buttons > .filtro");
+    pages[0].children[atual_page].innerText = atual_page+1;
     pages[0].children[atual_page].classList.add('atual');
 
     document.querySelector("body > .container > .buttons > .comodations").innerHTML = "<p>1 - 8 de 24 acomodações</p>";
@@ -58,5 +59,7 @@ async function nextPage(offset,button){
 
     let listData = Array.prototype.slice.call(pages[0].children, 0);
     listData.map(item=>item.classList.remove('atual'));
+    
+    pages[0].children[atual_page].innerText = atual_page+1;
     pages[0].children[atual_page].classList.add('atual');
 }
