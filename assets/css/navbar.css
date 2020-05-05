@@ -1,0 +1,43 @@
+.menu{
+    width: 100%;
+    height: 60px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom-width: 1.5px;
+    border-bottom-style:solid;
+     
+    border-bottom-color: rgba(121, 119, 119, 0.26);
+}
+
+.menu .menu_bar{
+    list-style: none;
+    width: 100%;
+    height: 100%;
+}
+
+.menu .menu_bar ul{
+    list-style: none;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.menu .menu_bar li{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+.menu .menu_bar .logotipo img{
+    width: 22%;
+    height: 12%;
+}

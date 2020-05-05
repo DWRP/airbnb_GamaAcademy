@@ -17,18 +17,16 @@ html,body{
 button,input{
     font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, sans-serif;
 }
-.hidding{
-    display: none;
-    visibility: hidden;
-    height: 0;
-    width: 0;
-}
-
 .container{
-    
+    height: 100%;
     width: 100%;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
+}
+.filtro{
+    display: flex;
+    align-items: center;
     justify-content: center;
 }
 
@@ -42,6 +40,7 @@ button,input{
     text-align: center;
     background-color: #ff000000;
     cursor:pointer;
+    margin: 22px auto 5px;
 }
 
 .atual{
@@ -50,9 +49,9 @@ button,input{
     align-self: center;
 }
 
-
-
-
+.buttons{
+    margin-bottom: 15px;
+}
 
 .load_container{
     display: flex;
