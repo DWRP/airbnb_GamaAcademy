@@ -27,14 +27,33 @@
             <div class="load_container reload hidding">
                 <div class='loading'></div>
             </div>
+            
+            <div class="filtros">
+                <button class="filter_item az" onclick="filtro_page('az')">
+                    A-Z
+                </button>
+                <button class="filter_item za" onclick="filtro_page('za')">
+                    Z-A
+                </button>
+                <button class="filter_item pm" onclick="filtro_page('pm')">
+                    Menor Preço
+                </button>
+                <button class="filter_item pp" onclick="filtro_page('pp')">
+                    Maior Preço
+                </button>
 
+                <button class="filter_item cls" onclick="filtro_page('cls')">
+                    Limpar
+                </button>
+
+            </div>
             <div class="card_container card_animation"></div>
             <div class="buttons">
-                <div class="filtro">
+                <div class="filtro_page">
 
                 </div>
                 <div class="comodations"></div>
-                <button class="all_data" onclick="allData()">Ver tudo</button>
+                <button class="all_data" onclick="allData()">Ver Tudo</button>
             </div>
             <footer class="footer">
                 <p class="original-description">

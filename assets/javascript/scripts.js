@@ -8,6 +8,7 @@
 var database = null;
 var atual_page = 1;
 var offset = 0;
+var filtro_atual = null;
 
 //Iniciando a função para carregar o conteúdo da página
 window.onload = loadPage();
@@ -84,7 +85,7 @@ function rawCards(database){
 //Escreve os botões na sua div e adiciona a classe atual ao botão que representa a página
 function rawButtons(atual_page){
 
-    buttonContainer = getElement("body > .container > .buttons > .filtro");
+    buttonContainer = getElement("body > .container > .buttons > .filtro_page");
 
     let btDiv = `<button class="pages bckfrw" onclick="previewPage(0,0)"> <svg aria-hidden="true" role="presentation" viewBox="-15 0 32 32" xmlns="http://www.w3.org/2000/svg" style="display: block; fill: none; height: 16px; width: 16px; stroke: currentcolor; stroke-width: 4; overflow: visible;"><g fill="none"><path d="m20 28-11.29289322-11.2928932c-.39052429-.3905243-.39052429-1.0236893 0-1.4142136l11.29289322-11.2928932"></path></g></svg> </button>`;
 
@@ -102,7 +103,7 @@ function rawButtons(atual_page){
 
     rawElements(buttonContainer,btDiv);
 
-    setClass(getElementsPos("body > .container > .buttons > .filtro",atual_page),"atual");
+    setClass(getElementsPos("body > .container > .buttons > .filtro_page",atual_page),"atual");
 
     atualCheck();
 
@@ -153,13 +154,13 @@ async function loadPage(){
 /*Esta função checa qual é a página atual, 
 removendo os botões next e prewiew quando necessário */
 function atualCheck(){
-    showElement(getElementsPos("body > .container > .buttons > .filtro",0));
-    showElement(getElementsPos("body > .container > .buttons > .filtro",4));
+    showElement(getElementsPos("body > .container > .buttons > .filtro_page",0));
+    showElement(getElementsPos("body > .container > .buttons > .filtro_page",4));
 
     if(atual_page === 1){
-        hiddenElement(getElementsPos("body > .container > .buttons > .filtro",0));
+        hiddenElement(getElementsPos("body > .container > .buttons > .filtro_page",0));
     }else if(atual_page === 3){
-        hiddenElement(getElementsPos("body > .container > .buttons > .filtro",4));
+        hiddenElement(getElementsPos("body > .container > .buttons > .filtro_page",4));
     }
 }
 
@@ -174,13 +175,13 @@ function newPage(start,button){
 
     hiddenElement(getElement("body > .container > .card_container"));
 
-    rmClass(getElementsPos("body > .container > .buttons > .filtro",atual_page),"atual");
+    rmClass(getElementsPos("body > .container > .buttons > .filtro_page",atual_page),"atual");
 
     atual_page = button;
   
     rawCards([...database].splice(start,offset));
 
-    setClass(getElementsPos("body > .container > .buttons > .filtro",atual_page),"atual");
+    setClass(getElementsPos("body > .container > .buttons > .filtro_page",atual_page),"atual");
 
     atualCheck();
 
@@ -196,20 +197,80 @@ function newPage(start,button){
 //Funções para os botões de página anterior e próxima página 
 function previewPage(offset,button){
 
-    rmClass(getElementsPos("body > .container > .buttons > .filtro",atual_page),"atual");
+    rmClass(getElementsPos("body > .container > .buttons > .filtro_page",atual_page),"atual");
     
     atual_page -= 1;
 
-    getElementsPos("body > .container > .buttons > .filtro",atual_page).click();
+    getElementsPos("body > .container > .buttons > .filtro_page",atual_page).click();
 
 }
 function nextPage(offset,button){
 
-    rmClass(getElementsPos("body > .container > .buttons > .filtro",atual_page),"atual");
+    rmClass(getElementsPos("body > .container > .buttons > .filtro_page",atual_page),"atual");
     
     atual_page += 1;
 
-    getElementsPos("body > .container > .buttons > .filtro",atual_page).click();
+    getElementsPos("body > .container > .buttons > .filtro_page",atual_page).click();
+}
+
+
+function nameFilter(type){
+
+    database.sort((index,next)=>{
+        if(index.name < next.name){
+            return -1;
+        }else if(index.name > next.name){
+            return 1;
+        }else{
+            return 0;
+        }
+    });
+
+    if (type==='az'?false:true){
+        database.reverse();
+    }
+}
+
+function priceFilter(type){
+
+    database.sort((index,next)=>{
+        if(index.price < next.price){
+            return -1;
+        }else if(index.price > next.price){
+            return 1;
+        }else{
+            return 0;
+        }
+    });
+
+    if (type==='pm'?false:true){
+        database.reverse();
+    }
+}
+
+
+async function filtro_page(type){
+
+    if (filtro_atual){
+        setClass(getElement(`body > .container > .filtros > .selected`),`${filtro_atual}`)
+        rmClass(getElement(`body > .container > .filtros > .${filtro_atual}`),'selected')
+    }
+    
+    filtro_atual = type;
+    setClass(getElement(`body > .container > .filtros > .${type}`),'selected')
+    rmClass(getElement(`body > .container > .filtros > .${filtro_atual}`),`${filtro_atual}`)
+    
+    if(type === 'az' || type === 'za'){
+        nameFilter(type);
+    }else if(type === 'pm' || type === 'pp'){
+        priceFilter(type);
+    }else{
+        setClass(getElement(`body > .container > .filtros > .selected`),`${filtro_atual}`)
+        rmClass(getElement(`body > .container > .filtros > .${filtro_atual}`),'selected')
+        database = await obterDatabase();
+    }
+
+    getElementsPos("body > .container > .buttons > .filtro_page",atual_page).click();
 }
 
 function allData(){
@@ -219,7 +280,7 @@ function allData(){
     if (link.innerText=="Ver Tudo"){
         link.innerText = "Ver Menos";
         rawCards(database);
-        hiddenElement(getElement("body > .container > .buttons > .filtro"));
+        hiddenElement(getElement("body > .container > .buttons > .filtro_page"));
 
         frase = `1 - 24 de 24 acomodações`;
 
@@ -228,7 +289,7 @@ function allData(){
     }else{
         link.innerText = "Ver Tudo";
         rawCards([...database].splice(0,8));
-        showElement(getElement("body > .container > .buttons > .filtro"));
+        showElement(getElement("body > .container > .buttons > .filtro_page"));
         
         atual_page = 1;
 

@@ -64,10 +64,49 @@ button,input{
     flex-direction: column;
     align-items: center;
 }
-.filtro{
+
+.filtros{
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    padding: 0 5px;
+}
+
+.filtros button{
+    border: 1px solid black;
+    background: none;
+    border-radius: 25px;
+    height: 45px;
+    padding: 10px 15px;
+
+    cursor: pointer;
+
+    transition: background .6s;
+}
+
+.filtros button:hover{
+    background: rgb(221, 56, 56);
+    color: white;
+}
+
+.filtros button:last-child{
+    margin-left: auto;
+}
+
+.filtro_page{
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.filtros .filter_item.selected{
+    background: rgba(36, 33, 33, 0.938);
+    color: white;
+}
+
+.filtros .filter_item.selected:hover{
+    background: rgb(221, 56, 56);
+    color: white;
 }
 
 .pages{
