@@ -1,13 +1,11 @@
 .card_container{
-    
+    animation: att .8s;
     max-width: 1366px;
-
-    animation: att 1s ease-in-out;
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    transition: 1s;
+    
 }
 
 .card_contant{
@@ -34,9 +32,9 @@
 
 @keyframes att{
     from{
-        transform: translateX(-500px);
+        transform: translateY(-110%);
     }
     to{
-        transform: translateX(0px);
+        transform: translateY(0px);
     }
 }

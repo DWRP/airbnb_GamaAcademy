@@ -1,65 +1,156 @@
-var filter = 8;
-var index = 0;
+var database = null;
+var atual_page = 1;
+var offset = 0;
 
-var atual_page = 0;
+function getElement(element){
+    return document.querySelector(element);
+}
 
-function loadCards(data,filtro=0,inicio=0){
-    let cards = ""
-    contador = filtro===0?data.lenght:0;
+function getElements(element){
+    return document.querySelectorAll(element);
+}
 
-    for (let item of data){
-        
-        if(contador === filtro && filtro>0){
-            break;
-        }else if(contador>=inicio){
-            cards += `<div class="card_contant"><img src="${item.photo.replace("xx_large","medium").replace("x_large","medium")}" class="card_img" alt=""><p class="card_type">${item.property_type}</p><p class="card_title">${item.name}</p><p class="card_price"><b>R$ ${item.price}</b>/noite</p></div>`;
-        }
-        contador++;
-    };
+function getElementsPos(element,pos){
+    ele = document.querySelectorAll(element);
+    return ele[0].children[Number.parseInt(pos)];
+}
 
-    document.querySelector("body > .container > .card_container").innerHTML = cards;
-    document.querySelector("body > .container").classList.remove('hidding');
+function setClass(element,classe){
+    element.classList.add(classe);
+}
 
-    document.querySelector("body > .load_container").classList.add('hidding');
+function rmClass(element,classe){
+    element.classList.remove(classe);
+}
 
-    document.querySelector("body > .container > .load_container").classList.add('hidding');
+function hiddenElements(element){
+    element.classList.add('hidding');
+}
 
-    document.querySelector("body > .container > .card_container").classList.remove('hidding_animation');
+function hiddenElement(element){
+    element.classList.add('hidden');
+}
 
-    document.querySelector("body > .container > .buttons").classList.remove('hidding_animation');
+function showElements(element){
+    element.classList.remove('hidding');
+}
+
+function rawElements(element,data){
+    element.innerHTML = data;
+}
+
+function rawCards(database){
+
+    let cards = '';
+
+    database.forEach(item=>{
+        cards += '<div class="card_contant">';
+        cards += `<img src="${item.photo.replace("xx_large","medium").replace("x_large","medium")}" class="card_img" alt="">`
+        cards += `<p class="card_type">${item.property_type}</p>`
+        cards += `<p class="card_title">${item.name}</p>`
+        cards +=`<p class="card_price"><b>R$ ${item.price}</b>/noite</p></div>`;
+    });
+    let cardContainter = getElement("body > .container > .card_container");
+    
+    rawElements(cardContainter,cards);
+}
+
+
+function rawButtons(database,atual_page){
+
+    buttonContainer = getElement("body > .container > .buttons > .filtro");
+
+    let btDiv = `<button class="pages bckfrw" onclick="previewPage(0,0)"> <svg aria-hidden="true" role="presentation" viewBox="-15 0 32 32" xmlns="http://www.w3.org/2000/svg" style="display: block; fill: none; height: 16px; width: 16px; stroke: currentcolor; stroke-width: 4; overflow: visible;"><g fill="none"><path d="m20 28-11.29289322-11.2928932c-.39052429-.3905243-.39052429-1.0236893 0-1.4142136l11.29289322-11.2928932"></path></g></svg> </button>`;
+
+    
+    let start = 0;
+    let end = offset;
+
+    for (let index = 0; index<3;index++){
+        btDiv += `<button class="pages" onclick="newPage(${start},${index+1})">${index+1}</button>`;
+        start = end;
+        end += offset;
+    }
+
+    btDiv += `<button class="pages bckfrw" onclick="nextPage(0,4)"> <svg aria-hidden="true" role="presentation" viewBox="-10 0 32 32" xmlns="http://www.w3.org/2000/svg" style="display: block; fill: none; height: 16px; width: 16px; stroke: currentcolor; stroke-width: 4; overflow: visible;"><g fill="none"><path d="m12 4 11.2928932 11.2928932c.3905243.3905243.3905243 1.0236893 0 1.4142136l-11.2928932 11.2928932"></path></g></svg> </button>`;
+
+    rawElements(buttonContainer,btDiv);
+
+    setClass(getElementsPos("body > .container > .buttons > .filtro",atual_page),"atual");
+
+    atualCheck();
 
 }
 
+async function obterDatabase(){
+    let data =  await fetch("https://api.sheety.co/30b6e400-9023-4a15-8e6c-16aa4e3b1e72");
+    let jsonData = await data.json();
+    return jsonData;
+}
 
 async function loadPage(){
-    let data = await fetch("https://api.sheety.co/30b6e400-9023-4a15-8e6c-16aa4e3b1e72");
-    loadCards(await data.json(),filter,index);
-    let pages = document.querySelectorAll("body > .container > .buttons > .filtro");
-    pages[0].children[atual_page].innerText = atual_page+1;
-    pages[0].children[atual_page].classList.add('atual');
+    database = await obterDatabase();
+    
+    offset = database.length/3;
 
-    document.querySelector("body > .container > .buttons > .comodations").innerHTML = "<p>1 - 8 de 24 acomodações</p>";
-     
+    container = getElement("body > .container");
+    loading = getElement("body > .load_container");
+
+    rawCards([...database].splice(0,8));
+
+    showElements(container);
+    hiddenElements(loading);
+
+    rawButtons(database,atual_page);
+
+    frase = `${atual_page===1?"1 - 8":atual_page===2?"9 - 16":"17 - 24"} de 24 acomodações`;
+
+    rawElements(getElement("body > .container > .buttons > .comodations"),`<p> ${frase} </p>`)
+
 }
 
-async function nextPage(offset,button){
-    document.querySelector("body > .container > .card_container").classList.add('hidding_animation');
-    document.querySelector("body > .container > .buttons").classList.add('hidding_animation');
-    document.querySelector("body > .container > .load_container").classList.remove('hidding');
+function atualCheck(){
+    rmClass(getElementsPos("body > .container > .buttons > .filtro",0),'hidden');
+    rmClass(getElementsPos("body > .container > .buttons > .filtro",4),'hidden');
 
+    if(atual_page === 1){
+        hiddenElement(getElementsPos("body > .container > .buttons > .filtro",0));
+    }else if(atual_page === 3){
+        hiddenElement(getElementsPos("body > .container > .buttons > .filtro",4));
+    }
+}
+
+function newPage(start,button){
     
+    hiddenElement(getElement("body > .container > .card_container"));
+
+    rmClass(getElementsPos("body > .container > .buttons > .filtro",atual_page),"atual");
+
     atual_page = button;
-    let data = await fetch("https://api.sheety.co/30b6e400-9023-4a15-8e6c-16aa4e3b1e72");
-    loadCards(await data.json(),filter+offset,index+offset);
-    let pages = document.querySelectorAll("body > .container > .buttons > .filtro");
-    acomodation = atual_page===0?"1 - 8":atual_page===1?"9 - 16":"17 - 24";
-    frase = `${acomodation} de 24 acomodações`;
+  
+    rawCards([...database].splice(start,offset));
 
-    document.querySelector("body > .container > .buttons > .comodations").innerHTML = "<p>" + frase +"</p>";
+    setClass(getElementsPos("body > .container > .buttons > .filtro",atual_page),"atual");
 
-    let listData = Array.prototype.slice.call(pages[0].children, 0);
-    listData.map(item=>item.classList.remove('atual'));
+    atualCheck();
+
+    rmClass(getElement("body > .container > .card_container"),'hidden');
+}
+
+function previewPage(offset,button){
+
+    rmClass(getElementsPos("body > .container > .buttons > .filtro",atual_page),"atual");
     
-    pages[0].children[atual_page].innerText = atual_page+1;
-    pages[0].children[atual_page].classList.add('atual');
+    atual_page -= 1;
+
+    getElementsPos("body > .container > .buttons > .filtro",atual_page).click();
+
+}
+function nextPage(offset,button){
+
+    rmClass(getElementsPos("body > .container > .buttons > .filtro",atual_page),"atual");
+    
+    atual_page += 1;
+
+    getElementsPos("body > .container > .buttons > .filtro",atual_page).click();
 }

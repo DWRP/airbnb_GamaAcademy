@@ -1,3 +1,17 @@
+@font-face {
+    font-family: 'Airbnb Cereal App Book';
+    font-style: normal;
+    font-weight: normal;
+    src: url('../fonts/AirbnbCerealBook.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Airbnb Cereal App Bold';
+    font-style: normal;
+    font-weight: normal;
+    src: url('../fonts/AirbnbCerealBold.woff') format('woff');
+}
+
 *{
     margin: 0;
     padding: 0;
@@ -6,7 +20,7 @@
 }
 
 html,body{
-    font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, sans-serif;
+    font-family:'Airbnb Cereal App Book';
     
     width: 100%;
     height: 100%;
@@ -18,6 +32,10 @@ html,body{
 
 }
 
+
+b{
+    font-family:'Airbnb Cereal App Bold';
+}
 html::-webkit-scrollbar {
   width: 5px;
 }
@@ -57,17 +75,27 @@ button,input{
     border: none;
     border-radius: 50%;
     font-weight: bold;
-    font-size: 12pt;
+    font-size: 14pt;
     text-align: center;
     background-color: #ff000000;
     cursor:pointer;
     margin: 22px auto 5px;
 }
 
+.bckfrw{
+    border: .5px solid #3333; 
+}
+
 .atual{
     background: #333;
     color: white;
     align-self: center;
+    justify-content: center;
+}
+
+.atual svg{
+    align-self: center;
+    
 }
 
 .buttons{
@@ -96,6 +124,10 @@ button,input{
     margin-top: 0;
     align-items:initial;
     justify-content: initial;
+}
+
+.hidden{
+    visibility: hidden;
 }
 
 @keyframes loaded {
