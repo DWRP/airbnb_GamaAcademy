@@ -251,6 +251,7 @@ function priceFilter(type){
 
 async function filtro_page(type){
 
+    
     if (filtro_atual){
         setClass(getElement(`body > .container > .filtros > .selected`),`${filtro_atual}`)
         rmClass(getElement(`body > .container > .filtros > .${filtro_atual}`),'selected')
@@ -268,9 +269,18 @@ async function filtro_page(type){
         setClass(getElement(`body > .container > .filtros > .selected`),`${filtro_atual}`)
         rmClass(getElement(`body > .container > .filtros > .${filtro_atual}`),'selected')
         database = await obterDatabase();
+        filtro_atual = null;
     }
 
-    getElementsPos("body > .container > .buttons > .filtro_page",atual_page).click();
+    console.log(getElement('body > .container > .buttons > .all_data').innerText);
+    if(getElement('body > .container > .buttons > .all_data').innerText === "Ver Tudo"){
+        getElementsPos("body > .container > .buttons > .filtro_page",atual_page).click();
+    }
+    else{
+        getElement('body > .container > .buttons > .all_data').innerText = "Ver Tudo";
+        allData();
+    }
+
 }
 
 function allData(){
