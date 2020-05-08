@@ -60,8 +60,8 @@ button,input{
     height: 100%;
     width: 100%;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 .filtro{
     display: flex;
@@ -100,6 +100,26 @@ button,input{
 
 .buttons{
     margin-bottom: 15px;
+}
+
+
+.footer{
+    width: 100%;
+    margin:12px auto;
+    padding-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+
+    border-top-width: 1.5px;
+    border-top-style:solid;
+    border-top-color: rgba(121, 119, 119, 0.26);
+}
+
+
+.footer a{
+    text-decoration: none;
 }
 
 .load_container{

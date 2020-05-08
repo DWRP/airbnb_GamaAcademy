@@ -1,7 +1,18 @@
+/* 
+    Variáveis de controle
+    *Não seria necessário 
+    se desse para filtrar
+    os dados direto da API*
+*/
+
 var database = null;
 var atual_page = 1;
 var offset = 0;
 
+//Iniciando a função para carregar o conteúdo da página
+window.onload = loadPage();
+
+/*Funcões de manipulação de página. - INICIO */
 function getElement(element){
     return document.querySelector(element);
 }
@@ -22,23 +33,33 @@ function setClass(element,classe){
 function rmClass(element,classe){
     element.classList.remove(classe);
 }
-
+//Remove display e visibilidade
 function hiddenElements(element){
     element.classList.add('hidding');
 }
-
-function hiddenElement(element){
-    element.classList.add('hidden');
-}
-
+//adiciona display e visibilidade
 function showElements(element){
     element.classList.remove('hidding');
 }
+//remove somente visbilidade
+function hiddenElement(element){
+    element.classList.add('hidden');
+}
+//adiciona somente visbilidade
+function showElement(element){
+    element.classList.remove('hidden');
+}
+
 
 function rawElements(element,data){
     element.innerHTML = data;
 }
 
+/*Funcões de manipulação de página. - FIM */
+
+/*Funcões de manipulação de conteúdo. - INICIO */
+//Escreve os cards, de acordo com o banco recebido.
+/* O banco é filtrado de acordo com os valores escritos nos botões */
 function rawCards(database){
 
     let cards = '';
@@ -55,8 +76,8 @@ function rawCards(database){
     rawElements(cardContainter,cards);
 }
 
-
-function rawButtons(database,atual_page){
+//Escreve os botões na sua div e adiciona a classe atual ao botão que representa a página
+function rawButtons(atual_page){
 
     buttonContainer = getElement("body > .container > .buttons > .filtro");
 
@@ -81,37 +102,47 @@ function rawButtons(database,atual_page){
     atualCheck();
 
 }
+/*Funcões de manipulação de conteúdo. - FIM */
 
+//Requisição JSON dos dados da API
 async function obterDatabase(){
     let data =  await fetch("https://api.sheety.co/30b6e400-9023-4a15-8e6c-16aa4e3b1e72");
     let jsonData = await data.json();
     return jsonData;
 }
 
+//Função principal
 async function loadPage(){
+    //Manipulando variável global - obtendo os dados da API
     database = await obterDatabase();
     
+    //Manipulando variável global - definindo o tamanho do filtro
     offset = database.length/3;
 
+    //Escrevendo os cards no campo de cards
+    rawCards([...database].splice(0,8));
+
+    //Ocultando e exibindo elementos (simulação de loading)
     container = getElement("body > .container");
     loading = getElement("body > .load_container");
-
-    rawCards([...database].splice(0,8));
 
     showElements(container);
     hiddenElements(loading);
 
-    rawButtons(database,atual_page);
+    //Escrevendo os botões da pagina e a frase abaixo dos botões
+    rawButtons(atual_page);
 
     frase = `${atual_page===1?"1 - 8":atual_page===2?"9 - 16":"17 - 24"} de 24 acomodações`;
 
-    rawElements(getElement("body > .container > .buttons > .comodations"),`<p> ${frase} </p>`)
+    rawElements(getElement("body > .container > .buttons > .comodations"),`<p> ${frase} </p>`);
 
 }
 
+/*Esta função checa qual é a página atual, 
+removendo os botões next e prewiew quando necessário */
 function atualCheck(){
-    rmClass(getElementsPos("body > .container > .buttons > .filtro",0),'hidden');
-    rmClass(getElementsPos("body > .container > .buttons > .filtro",4),'hidden');
+    showElement(getElementsPos("body > .container > .buttons > .filtro",0));
+    showElement(getElementsPos("body > .container > .buttons > .filtro",4));
 
     if(atual_page === 1){
         hiddenElement(getElementsPos("body > .container > .buttons > .filtro",0));
@@ -120,6 +151,7 @@ function atualCheck(){
     }
 }
 
+//Função para quando um botão de página é clicado
 function newPage(start,button){
     
     hiddenElement(getElement("body > .container > .card_container"));
@@ -134,9 +166,14 @@ function newPage(start,button){
 
     atualCheck();
 
-    rmClass(getElement("body > .container > .card_container"),'hidden');
+    showElement(getElement("body > .container > .card_container"));
+
+    frase = `${atual_page===1?"1 - 8":atual_page===2?"9 - 16":"17 - 24"} de 24 acomodações`;
+
+    rawElements(getElement("body > .container > .buttons > .comodations"),`<p> ${frase} </p>`);
 }
 
+//Funções para os botões de página anterior e próxima página 
 function previewPage(offset,button){
 
     rmClass(getElementsPos("body > .container > .buttons > .filtro",atual_page),"atual");

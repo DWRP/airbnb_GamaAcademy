@@ -10,16 +10,19 @@
         <script defer src="./assets/javascript/scripts.js"></script>
 
     </head>
-    <body onload="loadPage()">
+    <body>
+        <div class="load_container">
+            <div class='loading'></div>
+        </div>
         <div class="container hidding">
-            <div class="menu">
+            <header class="menu">
                 <nav class="menu_bar">
                     <ul>
                         <li class="logotipo"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Airbnb_Logo_B%C3%A9lo.svg/512px-Airbnb_Logo_B%C3%A9lo.svg.png" alt="Airbnb logo"></li>
                         
                     </ul>
                 </nav>
-            </div>
+            </header>
             
             <div class="load_container reload hidding">
                 <div class='loading'></div>
@@ -32,9 +35,15 @@
                 </div>
                 <div class="comodations"></div>
             </div>
+            <footer class="footer">
+                <p class="original-description">
+                    © 2020 <a href="https://www.airbnb.com.br/" target="_blank" >Airbnb</a>, Inc. All rights reserved
+                </p>
+                <p class="my-description">
+                    Clone by <a href="https://www.linkedin.com/in/douglaswalas/" class="linkedin" target="_blank">Douglas Walas</a> - <a href="http://github.com/DWRP" class="github" target="_blank">Github</a>
+                </p>
+            </footer>
         </div>
-        <div class="load_container">
-            <div class='loading'></div>
-        </div>
+        
     </body>
 </html>
