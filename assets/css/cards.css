@@ -1,5 +1,4 @@
 .card_container{
-    animation: att .8s;
     max-width: 1366px;
     width: 100%;
     display: flex;
@@ -28,6 +27,10 @@
 .hidding_animation{
     visibility: hidden !important;
     display: none;
+}
+
+.card_animation{
+    animation: att 1s;
 }
 
 @keyframes att{

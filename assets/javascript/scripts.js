@@ -12,6 +12,11 @@ var offset = 0;
 //Iniciando a função para carregar o conteúdo da página
 window.onload = loadPage();
 
+/*
+getElement('body > .container > .buttons > .all_data').innerText =  window.location.href[window.location.href.length-1] === "#"?"Ver Menos":"Ver Tudo";
+*/
+
+
 /*Funcões de manipulação de página. - INICIO */
 function getElement(element){
     return document.querySelector(element);
@@ -136,6 +141,13 @@ async function loadPage(){
 
     rawElements(getElement("body > .container > .buttons > .comodations"),`<p> ${frase} </p>`);
 
+    setTimeout(()=>{
+        rmClass(getElement("body > .container > .card_container"),'card_animation');
+    },1000);
+
+    
+    
+
 }
 
 /*Esta função checa qual é a página atual, 
@@ -153,7 +165,13 @@ function atualCheck(){
 
 //Função para quando um botão de página é clicado
 function newPage(start,button){
-    
+    window.scrollTo(0,0);
+
+    setClass(getElement("body > .container > .card_container"),'card_animation');
+     setTimeout(()=>{
+        rmClass(getElement("body > .container > .card_container"),'card_animation');
+    },1000);
+
     hiddenElement(getElement("body > .container > .card_container"));
 
     rmClass(getElementsPos("body > .container > .buttons > .filtro",atual_page),"atual");
@@ -171,6 +189,8 @@ function newPage(start,button){
     frase = `${atual_page===1?"1 - 8":atual_page===2?"9 - 16":"17 - 24"} de 24 acomodações`;
 
     rawElements(getElement("body > .container > .buttons > .comodations"),`<p> ${frase} </p>`);
+
+    
 }
 
 //Funções para os botões de página anterior e próxima página 
@@ -190,4 +210,30 @@ function nextPage(offset,button){
     atual_page += 1;
 
     getElementsPos("body > .container > .buttons > .filtro",atual_page).click();
+}
+
+function allData(){
+
+    let link = getElement('body > .container > .buttons > .all_data');
+
+    if (link.innerText=="Ver Tudo"){
+        link.innerText = "Ver Menos";
+        rawCards(database);
+        hiddenElement(getElement("body > .container > .buttons > .filtro"));
+
+        frase = `1 - 24 de 24 acomodações`;
+
+        rawElements(getElement("body > .container > .buttons > .comodations"),`<p> ${frase} </p>`);
+
+    }else{
+        link.innerText = "Ver Tudo";
+        rawCards([...database].splice(0,8));
+        showElement(getElement("body > .container > .buttons > .filtro"));
+        
+        atual_page = 1;
+
+        frase = `${atual_page===1?"1 - 8":atual_page===2?"9 - 16":"17 - 24"} de 24 acomodações`;
+
+        rawElements(getElement("body > .container > .buttons > .comodations"),`<p> ${frase} </p>`);
+    }
 }
