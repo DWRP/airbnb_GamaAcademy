@@ -1,4 +1,4 @@
-# airbnb_GamaAcademy
+# airbnb_GamaAcademy (Site off - API disabled) 
     A page for assignment to Hiring Coders Program.
     Page clone of airbnb.com.br with HTML5.
 
@@ -13,4 +13,5 @@
 
 
 ## Preview
-    https://airgama.netlify.app/
+
+https://airgama.netlify.app/
